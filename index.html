@@ -306,8 +306,11 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   .photo-ring{width:200px;height:200px;}
   .r-grid,.sc-grid,.v-grid{grid-template-columns:1fr;}
   .page{padding:calc(var(--nav-h) + 1.5rem) 1.5rem 2rem;}
-  #topnav{padding:0 0.8rem;}
-  .np{font-size:0.58rem;padding:0.3rem 0.45rem;}
+  #topnav{padding:0 0.8rem;overflow:hidden;}
+  .np{font-size:0.58rem;padding:0.3rem 0.45rem;white-space:nowrap;}
+  .nav-brand{font-size:0.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:36vw;}
+  .nav-pages{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:62vw;}
+  .nav-pages::-webkit-scrollbar{display:none;}
   #arr-r{right:2rem;}
 }
 </style>
@@ -877,6 +880,8 @@ function prev(){goTo(cur-1);}
 function ui(){
   document.querySelectorAll('.db').forEach((d,i)=>d.classList.toggle('active',i===cur));
   document.querySelectorAll('.np').forEach((n,i)=>n.classList.toggle('active',i===cur));
+  const _navBtn=document.querySelectorAll('.np')[cur];
+  if(_navBtn) _navBtn.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
   document.getElementById('pgi').textContent=String(cur+1).padStart(2,'0')+' / '+String(N).padStart(2,'0')+'  ·  '+LABELS[cur];
   document.getElementById('arr-l').classList.toggle('hidden',cur===0);
   document.getElementById('arr-r').classList.toggle('hidden',cur===N-1);
