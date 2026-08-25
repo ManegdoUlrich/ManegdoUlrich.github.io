@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<!-- © 2026 Manegdo Ulrich Bienvenue DOAMBA — All Rights Reserved. See LICENSE file in this repository. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manegdo Ulrich Bienvenue DOAMBA | Development Economist</title>
+<meta name="author" content="Manegdo Ulrich Bienvenue DOAMBA">
+<meta name="copyright" content="© 2026 Manegdo Ulrich Bienvenue DOAMBA. All rights reserved.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#07122a; --bg2:#0c1d3d; --bg3:#112350;
+  --gold:#c9a44a; --gold2:rgba(201,164,74,0.12); --gold3:rgba(201,164,74,0.25);
+  --blue:#7cb9e8; --blue2:rgba(124,185,232,0.12);
+  --green:#3fb950; --green2:rgba(63,185,80,0.1);
+  --purple:#a78bfa; --purple2:rgba(167,139,250,0.1);
+  --text:#b8cce0; --bright:#e8f2fa; --muted:#6e8faa;
+  --border:rgba(201,164,74,0.20); --border2:rgba(124,185,232,0.08);
+  --nav-h:58px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--gold3);border-radius:2px;}
+
+/* NAV */
+#topnav{
+  position:fixed;top:0;left:0;right:0;z-index:500;height:var(--nav-h);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 2rem;
+  background:rgba(13,17,23,0.92);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border2);
+}
+.nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);font-weight:700;letter-spacing:0.08em;text-decoration:none;}
+.nav-pages{display:flex;gap:0.1rem;}
+.np{background:none;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;padding:0.4rem 0.7rem;border-radius:20px;cursor:pointer;transition:all 0.2s;}
+.np:hover{color:var(--gold);}
+.np.active{color:var(--gold);background:var(--gold2);}
+
+/* SIDE DOTS */
+#dots{position:fixed;right:1.5rem;top:50%;transform:translateY(-50%);z-index:500;display:flex;flex-direction:column;gap:0.55rem;}
+.db{width:7px;height:7px;border-radius:50%;background:var(--muted);border:none;cursor:pointer;transition:all 0.3s;opacity:0.4;}
+.db.active{background:var(--gold);opacity:1;transform:scale(1.5);}
+.db:hover{opacity:1;}
+
+/* ARROWS */
+#arr-l,#arr-r{
+  position:fixed;top:50%;z-index:500;
+  background:var(--gold2);border:1px solid var(--border);color:var(--gold);
+  font-size:1.1rem;width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.22s;transform:translateY(-50%);user-select:none;
+}
+#arr-l{left:0.8rem;}
+#arr-r{right:2.6rem;}
+#arr-l:hover,#arr-r:hover{background:var(--gold3);transform:translateY(-50%) scale(1.1);}
+#arr-l.hidden,#arr-r.hidden{opacity:0.12;pointer-events:none;}
+
+/* PAGE INDICATOR */
+#pgi{position:fixed;bottom:1.1rem;left:50%;transform:translateX(-50%);z-index:500;font-size:0.68rem;color:var(--muted);letter-spacing:0.16em;text-transform:uppercase;}
+
+/* VIEWPORT */
+#viewport{width:100%;height:100vh;overflow:hidden;position:relative;}
+
+/* PAGES */
+.page{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  overflow-y:auto;
+  padding:calc(var(--nav-h) + 2rem) 5rem 3rem;
+  display:flex;align-items:flex-start;justify-content:center;
+  will-change:transform,opacity;
+}
+.page.current{transform:translateX(0);opacity:1;z-index:2;}
+.page.offR{transform:translateX(100%);opacity:0;z-index:1;}
+.page.offL{transform:translateX(-100%);opacity:0;z-index:1;}
+
+/* SEC HEADER */
+.sec-hd{display:flex;align-items:center;gap:0.8rem;margin-bottom:2.5rem;}
+.sec-num{color:var(--gold);font-size:0.83rem;font-family:monospace;}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;color:var(--bright);white-space:nowrap;}
+.sec-line{flex:1;height:1px;background:rgba(201,164,74,0.14);}
+
+/* BUTTONS */
+.btn{padding:0.75rem 1.7rem;border-radius:4px;font-size:0.84rem;font-weight:500;text-decoration:none;transition:all 0.22s;border:none;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-g{background:var(--gold);color:#0d1117;font-weight:700;}
+.btn-g:hover{background:#e0b85a;}
+.btn-o{background:transparent;color:var(--gold);border:1px solid var(--gold);}
+.btn-o:hover{background:var(--gold2);}
+
+/* ═══ PAGE 1: HOME ═══ */
+#p-home{
+  background:radial-gradient(ellipse at 60% 50%, #1a2035 0%, var(--bg) 65%);
+  align-items:center;padding-top:var(--nav-h);
+}
+.home-inner{display:grid;grid-template-columns:1fr 1.15fr;gap:5rem;align-items:center;max-width:1080px;width:100%;}
+.photo-side{display:flex;justify-content:center;align-items:center;position:relative;}
+.photo-ring{
+  width:300px;height:300px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),#6b4c11,var(--gold));
+  padding:3px;box-shadow:0 0 70px rgba(201,164,74,0.18);
+  animation:glow 3.5s ease-in-out infinite;
+}
+.photo-inner{width:100%;height:100%;border-radius:50%;overflow:hidden;background:var(--bg2);}
+.photo-inner img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+.photo-badge{
+  position:absolute;bottom:10px;right:6px;
+  background:var(--bg);border:1px solid var(--border);border-radius:8px;
+  padding:0.4rem 0.85rem;font-size:0.71rem;color:var(--gold);letter-spacing:0.06em;
+  box-shadow:0 8px 24px rgba(0,0,0,0.4);
+}
+@keyframes glow{0%,100%{box-shadow:0 0 70px rgba(201,164,74,0.18);}50%{box-shadow:0 0 90px rgba(201,164,74,0.32);}}
+.h-pre{color:var(--gold);font-size:0.77rem;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:1rem;}
+.h-name{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.2vw,3.2rem);color:var(--bright);font-weight:700;line-height:1.05;margin-bottom:0.5rem;}
+.h-name span{color:var(--gold);}
+.h-title{font-size:0.9rem;color:var(--text);margin-bottom:0.3rem;}
+.h-inst{font-size:0.82rem;color:var(--muted);margin-bottom:1.8rem;}
+.h-desc{font-size:0.87rem;line-height:1.9;max-width:490px;margin-bottom:2rem;}
+.h-btns{display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1.8rem;}
+.h-tags{display:flex;gap:0.45rem;flex-wrap:wrap;}
+.htag{background:var(--gold2);color:var(--gold);border:1px solid rgba(201,164,74,0.2);padding:0.25rem 0.75rem;border-radius:20px;font-size:0.69rem;}
+.h-links{display:flex;flex-wrap:wrap;gap:0.7rem;margin-top:1.4rem;align-items:center;}
+.h-link{display:inline-flex;align-items:center;gap:0.45rem;color:var(--muted);text-decoration:none;font-size:0.8rem;padding:0.4rem 0.9rem;border-radius:6px;border:1px solid var(--border2);background:rgba(124,185,232,0.04);transition:all 0.2s;}
+.h-link:hover,.h-link-btn:hover{color:var(--gold);border-color:var(--border);background:var(--gold2);}
+.h-link i{font-size:0.95rem;}
+.h-link-btn{background:rgba(124,185,232,0.04);border:1px solid var(--border2);color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;font-size:0.8rem;}
+
+/* ═══ PAGE 2: ABOUT ═══ */
+.about-wrap{display:grid;grid-template-columns:1.7fr 1fr;gap:3.5rem;max-width:1080px;width:100%;}
+.at p{font-size:0.87rem;line-height:1.88;margin-bottom:1rem;}
+.at a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold3);}
+.at a:hover{border-bottom-color:var(--gold);}
+.at strong{color:var(--bright);}
+.at em{color:var(--muted);font-style:italic;}
+.ed-block{margin-top:1.8rem;}
+.ed-item{display:flex;gap:1rem;padding:0.85rem 0;border-bottom:1px solid var(--border2);}
+.ed-item:last-child{border-bottom:none;}
+.ed-yr{color:var(--gold);font-size:0.72rem;font-family:monospace;min-width:42px;padding-top:0.1rem;flex-shrink:0;}
+.ed-deg{color:var(--bright);font-size:0.88rem;font-weight:600;margin-bottom:0.2rem;}
+.ed-sch{color:var(--muted);font-size:0.78rem;margin-bottom:0.25rem;}
+.ed-nt{color:var(--gold);font-size:0.73rem;font-style:italic;margin-bottom:0.25rem;}
+.ed-desc{font-size:0.79rem;line-height:1.72;margin-top:0.35rem;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1.1rem;}
+.card h4{color:var(--gold);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.9rem;}
+.st{display:flex;justify-content:space-between;align-items:center;padding:0.45rem 0;border-bottom:1px solid var(--border2);}
+.st:last-child{border-bottom:none;}
+.st-v{font-size:1.5rem;font-weight:700;color:var(--bright);font-family:'Cormorant Garamond',serif;}
+.st-l{font-size:0.73rem;color:var(--muted);}
+.lang-r{display:flex;justify-content:space-between;align-items:center;padding:0.55rem 0;border-bottom:1px solid var(--border2);}
+.lang-r:last-child{border-bottom:none;}
+.lang-n{color:var(--bright);font-size:0.86rem;font-weight:500;}
+.lang-lv{font-size:0.76rem;color:var(--muted);}
+.sk-wrap{display:flex;flex-wrap:wrap;gap:0.38rem;margin-top:0.3rem;}
+.sk{background:var(--blue2);color:var(--blue);border:1px solid rgba(88,166,255,0.18);padding:0.2rem 0.62rem;border-radius:20px;font-size:0.68rem;}
+
+/* ═══ PAGE 3: RESEARCH ═══ */
+.research-wrap{max-width:1080px;width:100%;}
+.r-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-bottom:2.5rem;}
+.rc{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:1.4rem;transition:all 0.3s;}
+.rc:hover{border-color:var(--border);transform:translateY(-4px);box-shadow:0 14px 28px rgba(0,0,0,0.3);}
+.rc-ico{font-size:1.7rem;margin-bottom:0.7rem;}
+.rc h3{color:var(--bright);font-size:0.88rem;margin-bottom:0.55rem;font-weight:600;}
+.rc p{font-size:0.79rem;line-height:1.72;}
+.sc-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--bright);margin-bottom:0.4rem;}
+.sc-sub{font-size:0.8rem;color:var(--muted);margin-bottom:1.2rem;}
+.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.sc-card{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;overflow:hidden;transition:all 0.22s;cursor:pointer;}
+.sc-card:hover{border-color:var(--border);transform:scale(1.02);}
+.sc-img{height:130px;background:var(--bg3);display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border2);}
+.sc-img img{width:100%;height:100%;object-fit:contain;padding:0.5rem;}
+.sc-ph{display:flex;flex-direction:column;align-items:center;gap:0.4rem;color:var(--muted);font-size:0.72rem;text-align:center;padding:1rem;}
+.sc-ph .ico{font-size:1.8rem;opacity:0.35;}
+.sc-info{padding:0.85rem;}
+.sc-journal{color:var(--gold);font-size:0.67rem;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:0.25rem;}
+.sc-label{color:var(--bright);font-size:0.8rem;font-weight:500;line-height:1.4;}
+
+/* ═══ PAGE 4: EXPERIENCE ═══ */
+.exp-wrap{max-width:880px;width:100%;}
+.tl{position:relative;padding-left:1.5rem;}
+.tl::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold),rgba(201,164,74,0.04));}
+.tli{position:relative;margin-bottom:2.2rem;padding-left:2rem;}
+.tli::before{content:'';position:absolute;left:-2.25rem;top:0.3rem;width:11px;height:11px;border-radius:50%;background:var(--gold);border:2px solid var(--bg);box-shadow:0 0 10px rgba(201,164,74,0.45);}
+.tl-date{color:var(--gold);font-size:0.72rem;letter-spacing:0.1em;font-family:monospace;margin-bottom:0.22rem;}
+.tl-role{color:var(--bright);font-size:0.98rem;font-weight:600;margin-bottom:0.12rem;}
+.tl-org{color:var(--muted);font-size:0.83rem;margin-bottom:0.65rem;}
+.tl-ul{list-style:none;}
+.tl-ul li{font-size:0.81rem;padding:0.18rem 0;display:flex;gap:0.45rem;line-height:1.6;}
+.tl-ul li::before{content:'›';color:var(--gold);flex-shrink:0;}
+
+/* ═══ PAGE 5: PUBLICATIONS ═══ */
+.pub-wrap{max-width:980px;width:100%;}
+.ptabs{display:flex;border-bottom:1px solid var(--border2);margin-bottom:1.8rem;}
+.ptab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'Inter',sans-serif;font-size:0.79rem;padding:0.65rem 1.5rem;cursor:pointer;transition:all 0.2s;}
+.ptab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.pane{display:none;}
+.pane.active{display:block;}
+.pi{padding:1.2rem;border-left:2px solid rgba(201,164,74,0.15);margin-bottom:1.2rem;border-radius:0 8px 8px 0;transition:all 0.22s;}
+.pi:hover{border-left-color:var(--gold);background:var(--gold2);}
+.pi-title{color:var(--bright);font-size:0.9rem;font-weight:500;margin-bottom:0.32rem;line-height:1.5;}
+.pi-meta{font-size:0.76rem;color:var(--muted);margin-bottom:0.5rem;}
+.pi-j{color:var(--gold);font-style:italic;}
+.pi-tags{display:flex;gap:0.32rem;flex-wrap:wrap;margin-bottom:0.48rem;}
+.pt{background:var(--gold2);color:var(--gold);border:1px solid rgba(201,164,74,0.18);padding:0.11rem 0.55rem;border-radius:20px;font-size:0.66rem;}
+.pi-link{display:inline-block;color:var(--gold);font-size:0.76rem;text-decoration:none;border:1px solid rgba(201,164,74,0.28);padding:0.17rem 0.58rem;border-radius:4px;transition:all 0.2s;}
+.pi-link:hover{background:var(--gold2);}
+
+/* ═══ PAGE 6: WORLD ═══ */
+.world-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:1080px;width:100%;align-items:start;}
+#globe-main{width:100%;height:400px;}
+.gl-legend{display:flex;gap:1.5rem;margin-top:0.8rem;font-size:0.76rem;color:var(--muted);}
+.gl-d{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:0.3rem;}
+.conf-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--bright);margin-bottom:1.1rem;}
+.cc{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:0.95rem 1.2rem;margin-bottom:0.75rem;transition:all 0.2s;}
+.cc:hover{border-color:var(--border);transform:translateX(4px);}
+.cc-yr{color:var(--gold);font-size:0.7rem;font-family:monospace;margin-bottom:0.18rem;}
+.cc-name{color:var(--bright);font-size:0.84rem;font-weight:500;margin-bottom:0.12rem;}
+.cc-loc{color:var(--muted);font-size:0.77rem;}
+
+/* ═══ PAGE 7: VENTURES ═══ */
+.ventures-wrap{max-width:1080px;width:100%;}
+.v-intro{font-size:0.88rem;line-height:1.85;max-width:750px;margin-bottom:2.5rem;}
+.v-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.vc{border-radius:12px;overflow:hidden;border:1px solid var(--border2);transition:all 0.3s;display:flex;flex-direction:column;}
+.vc:hover{border-color:var(--border);transform:translateY(-5px);box-shadow:0 20px 40px rgba(0,0,0,0.35);}
+.vc-header{padding:1.8rem 1.6rem 1.4rem;position:relative;}
+.vc-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;margin-bottom:0.3rem;}
+.vc-tag{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;opacity:0.75;}
+.vc-body{background:var(--bg2);padding:1.4rem 1.6rem;flex:1;display:flex;flex-direction:column;gap:1rem;}
+.vc-role{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.22rem 0.7rem;border-radius:20px;display:inline-block;margin-bottom:0.2rem;align-self:flex-start;}
+.vc-desc{font-size:0.82rem;line-height:1.78;}
+.vc-mission{font-size:0.8rem;line-height:1.7;font-style:italic;border-left:2px solid;padding-left:0.9rem;margin:0.2rem 0;}
+.vc-features{list-style:none;display:flex;flex-direction:column;gap:0.38rem;}
+.vc-features li{font-size:0.79rem;display:flex;gap:0.45rem;line-height:1.5;}
+.vc-features li::before{content:'·';flex-shrink:0;}
+.vc-footer{padding:1rem 1.6rem;border-top:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center;}
+.vc-link{text-decoration:none;font-size:0.78rem;font-weight:500;display:flex;align-items:center;gap:0.35rem;}
+.vc-link::after{content:'↗';}
+.vc-year{font-size:0.7rem;color:var(--muted);}
+
+/* EcoDeViews */
+.vc-eco .vc-header{background:linear-gradient(135deg,#1a2a1a,#0d1f0d);}
+.vc-eco .vc-logo{color:#3fb950;}
+.vc-eco .vc-tag{color:#3fb950;}
+.vc-eco .vc-role{background:var(--green2);color:var(--green);}
+.vc-eco .vc-mission{border-color:var(--green);color:var(--green);}
+.vc-eco .vc-features li::before{color:var(--green);}
+.vc-eco .vc-link{color:var(--green);}
+
+/* C-Card */
+.vc-ccard .vc-header{background:linear-gradient(135deg,#0d1f18,#091a10);}
+.vc-ccard .vc-logo{color:#1a7a4a;}
+.vc-ccard .vc-tag{color:#2ea06a;}
+.vc-ccard .vc-role{background:rgba(26,122,74,0.12);color:#2ea06a;}
+.vc-ccard .vc-mission{border-color:#1a7a4a;color:#2ea06a;}
+.vc-ccard .vc-features li::before{color:#2ea06a;}
+.vc-ccard .vc-link{color:#2ea06a;}
+
+/* DMUB Consulting */
+.vc-dmub .vc-header{background:linear-gradient(135deg,#1a1a2e,#12122a);}
+.vc-dmub .vc-logo{color:var(--gold);}
+.vc-dmub .vc-tag{color:var(--gold);}
+.vc-dmub .vc-role{background:var(--gold2);color:var(--gold);}
+.vc-dmub .vc-mission{border-color:var(--gold);color:var(--gold);}
+.vc-dmub .vc-features li::before{color:var(--gold);}
+.vc-dmub .vc-link{color:var(--gold);}
+
+/* ═══ PAGE 8: ACTIVITIES ═══ */
+.act-wrap{max-width:1000px;width:100%;}
+.act-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+.act-section{margin-bottom:2rem;}
+.act-section h3{color:var(--gold);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border2);}
+.act-card{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:1.2rem 1.4rem;margin-bottom:0.8rem;transition:all 0.2s;}
+.act-card:hover{border-color:var(--border);}
+.act-role{color:var(--bright);font-size:0.9rem;font-weight:600;margin-bottom:0.25rem;}
+.act-org{color:var(--gold);font-size:0.8rem;margin-bottom:0.25rem;}
+.act-desc{color:var(--muted);font-size:0.79rem;line-height:1.65;}
+.act-link{color:var(--gold);text-decoration:none;font-size:0.76rem;border-bottom:1px solid var(--gold3);}
+.act-link:hover{border-bottom-color:var(--gold);}
+
+/* ═══ PAGE 9: CONTACT ═══ */
+#p-contact{background:radial-gradient(ellipse at center,#1a1e2e 0%,var(--bg) 70%);align-items:center;}
+.ct-wrap{max-width:780px;width:100%;text-align:center;}
+.ct-pre{color:var(--gold);font-size:0.76rem;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:0.9rem;}
+.ct-h{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,3rem);color:var(--bright);margin-bottom:0.9rem;}
+.ct-desc{font-size:0.88rem;line-height:1.85;max-width:480px;margin:0 auto 2rem;}
+.ct-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.9rem;margin:1.8rem 0;text-align:left;}
+.ci{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:1.1rem 1.3rem;}
+.ci-l{color:var(--muted);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.35rem;}
+.ci-v{color:var(--bright);font-size:0.84rem;}
+.ci-v a{color:var(--gold);text-decoration:none;}
+.soc-row{display:flex;justify-content:center;gap:2rem;margin-top:1.8rem;flex-wrap:wrap;}
+.soc{color:var(--muted);text-decoration:none;font-size:0.79rem;display:flex;flex-direction:column;align-items:center;gap:0.32rem;transition:color 0.2s;}
+.soc:hover{color:var(--gold);}
+.soc-ico{font-size:1.25rem;}
+.ref-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.9rem;margin-top:1.4rem;text-align:left;}
+.ref-card{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:0.9rem 1.1rem;}
+.ref-name{color:var(--bright);font-size:0.84rem;font-weight:600;margin-bottom:0.18rem;}
+.ref-role{color:var(--muted);font-size:0.74rem;margin-bottom:0.35rem;}
+.ref-email{color:var(--gold);font-size:0.73rem;}
+
+@media(max-width:1020px){
+  .home-inner,.about-wrap,.world-wrap,.act-grid,.ct-grid,.ref-grid{grid-template-columns:1fr;}
+  .photo-side{order:-1;}
+  .photo-ring{width:200px;height:200px;}
+  .r-grid,.sc-grid,.v-grid{grid-template-columns:1fr;}
+  .page{padding:calc(var(--nav-h) + 1.5rem) 1.5rem 2rem;}
+  #topnav{padding:0 0.8rem;}
+  .np{font-size:0.58rem;padding:0.3rem 0.45rem;}
+  #arr-r{right:2rem;}
+}
+</style>
+</head>
+<body>
+
+<nav id="topnav">
+  <a class="nav-brand" href="#">Manegdo Ulrich B. DOAMBA</a>
+  <div class="nav-pages">
+    <button class="np active" onclick="goTo(0)">Home</button>
+    <button class="np" onclick="goTo(1)">About</button>
+    <button class="np" onclick="goTo(2)">Research</button>
+    <button class="np" onclick="goTo(3)">Experience</button>
+    <button class="np" onclick="goTo(4)">Publications</button>
+    <button class="np" onclick="goTo(5)">World</button>
+    <button class="np" onclick="goTo(6)">Ventures</button>
+    <button class="np" onclick="goTo(7)">Activities</button>
+    <button class="np" onclick="goTo(8)">Contact</button>
+  </div>
+</nav>
+
+<div id="dots">
+  <button class="db active" onclick="goTo(0)" title="Home"></button>
+  <button class="db" onclick="goTo(1)" title="About"></button>
+  <button class="db" onclick="goTo(2)" title="Research"></button>
+  <button class="db" onclick="goTo(3)" title="Experience"></button>
+  <button class="db" onclick="goTo(4)" title="Publications"></button>
+  <button class="db" onclick="goTo(5)" title="World"></button>
+  <button class="db" onclick="goTo(6)" title="Ventures"></button>
+  <button class="db" onclick="goTo(7)" title="Activities"></button>
+  <button class="db" onclick="goTo(8)" title="Contact"></button>
+</div>
+
+<div id="arr-l" onclick="prev()">&#8592;</div>
+<div id="arr-r" onclick="next()">&#8594;</div>
+<div id="pgi">01 / 09 &nbsp;·&nbsp; Home</div>
+
+<div id="viewport">
+
+<!-- ══ 1. HOME ══ -->
+<div class="page current" id="p-home">
+  <div class="home-inner">
+    <div class="photo-side">
+      <div class="photo-ring">
+        <div class="photo-inner">
+          <img src="photo.jpg" alt="Manegdo Ulrich Bienvenue DOAMBA">
+        </div>
+      </div>
+      <div class="photo-badge">📍 Nancy, France</div>
+    </div>
+    <div class="home-text">
+      <p class="h-pre">Development · Environmental · Natural Resource Economics</p>
+      <h1 class="h-name">Manegdo Ulrich<br>Bienvenue <span>DOAMBA</span></h1>
+      <p class="h-title">Postdoctoral Researcher · INRAE / BETA · Université de Lorraine</p>
+      <p class="h-inst">Ph.D. in Economics · Université Clermont Auvergne · Burkinabè</p>
+      <p class="h-desc">I study how natural resources shape welfare, structural change, and environmental outcomes in developing countries, using causal inference methods on observational data across Sub-Saharan Africa, Asia, and Latin America.</p>
+      <div class="h-btns">
+        <button class="btn btn-g" onclick="goTo(4)">Publications</button>
+        <button class="btn btn-o" onclick="goTo(8)">Contact</button>
+      </div>
+      <div class="h-tags">
+        <span class="htag">Mining Economics</span>
+        <span class="htag">Global Value Chains</span>
+        <span class="htag">Causal Inference</span>
+        <span class="htag">Environmental Economics</span>
+        <span class="htag">Agricultural Policy</span>
+      </div>
+      <div class="h-links">
+        <a href="https://linkedin.com/in/manegdo-ulrich-doamba" class="h-link" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="mailto:manegdo-ulrich.doamba@inrae.fr" class="h-link"><i class="fas fa-envelope"></i> manegdo-ulrich.doamba@inrae.fr</a>
+        <button class="h-link h-link-btn" onclick="goTo(8)"><i class="fas fa-address-card"></i> Contact</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2. ABOUT ══ -->
+<div class="page offR" id="p-about">
+  <div class="about-wrap">
+    <div class="at">
+      <div class="sec-hd">
+        <span class="sec-num">02.</span>
+        <h2 class="sec-title">About</h2>
+        <div class="sec-line"></div>
+      </div>
+      <p>I am a Burkinabè development economist currently serving as a <strong>Postdoctoral Researcher at INRAE/BETA, Université de Lorraine</strong> (France). My PhD dissertation, <em>Mining and Welfare in Developing Countries</em> (Université Clermont Auvergne, November 2024), produced four empirical essays examining how natural resource extraction shapes global value chain participation, firm performance, deforestation, and wealth inequality.</p>
+      <p>I received my graduate training at <a href="https://cerdi.uca.fr" target="_blank">CERDI</a> (Centre d'Études et de Recherches sur le Développement International), one of France's most internationally recognised centres for development economics research and education. My doctoral jury included <strong>Dr. Kimm Gnangnon</strong> (World Bank Group) and <strong>Dr. Sampawende Jules Tapsoba</strong> (IMF).</p>
+      <p>Beyond research, I founded <strong>DMUB Consulting</strong> and <strong>C-Card</strong>, and serve as Editor-in-Chief of <strong>EcoDeViews</strong>: three initiatives bridging rigorous economic analysis with real-world impact on the African continent.</p>
+
+      <div class="ed-block">
+        <div class="sec-hd" style="margin-top:1.5rem;margin-bottom:1rem;">
+          <span class="sec-num" style="font-size:0.73rem;">EDU</span>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--bright);">Education</h3>
+          <div class="sec-line"></div>
+        </div>
+
+        <div class="ed-item">
+          <div class="ed-yr">2024</div>
+          <div>
+            <div class="ed-deg">Ph.D. in Economics</div>
+            <div class="ed-sch">Université Clermont Auvergne · LEO-UCA · Supervisor: Pr. Pascale Combes Motel</div>
+            <div class="ed-nt">Dissertation: "Mining and Welfare in Developing Countries" (4 essays)</div>
+            <div class="ed-desc">The doctoral programme at LEO-UCA (Laboratoire d'Économie d'Orléans - Université Clermont Auvergne) combines advanced training in quantitative economic analysis with independent research in development, environmental and international economics. Methods mobilised: event-study designs, entropy balancing, multilevel regression models, difference-in-differences, spatial econometrics, dynamic panel GMM, and Tobit models.</div>
+            <div style="margin-top:0.7rem;background:rgba(124,185,232,0.05);border:1px solid rgba(124,185,232,0.1);border-radius:8px;padding:0.9rem 1.1rem;">
+              <div style="color:var(--gold);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.6rem;">Doctoral Jury</div>
+              <div style="display:flex;flex-direction:column;gap:0.35rem;">
+                <div style="font-size:0.79rem;display:flex;gap:0.5rem;align-items:baseline;padding-bottom:0.45rem;border-bottom:1px solid rgba(124,185,232,0.08);margin-bottom:0.1rem;"><span style="color:var(--gold);font-size:0.7rem;min-width:110px;flex-shrink:0;">Thesis Director</span><span style="color:var(--bright);font-weight:600;">Professeure Pascale COMBES MOTEL</span><span style="color:var(--muted);font-size:0.75rem;">&nbsp;· Université Clermont Auvergne</span></div>
+                <div style="font-size:0.79rem;display:flex;gap:0.5rem;align-items:baseline;"><span style="color:var(--gold);font-size:0.7rem;min-width:110px;flex-shrink:0;">Chair</span><span style="color:var(--bright);">Pr. Jean-Louis COMBES</span><span style="color:var(--muted);font-size:0.75rem;">&nbsp;· Université Clermont Auvergne, LEO-UCA</span></div>
+                <div style="font-size:0.79rem;display:flex;gap:0.5rem;align-items:baseline;"><span style="color:var(--gold);font-size:0.7rem;min-width:110px;flex-shrink:0;">External Examiner</span><span style="color:var(--bright);">Pr. Cécile COUHARDE</span><span style="color:var(--muted);font-size:0.75rem;">&nbsp;· Université Paris Nanterre, EconomiX</span></div>
+                <div style="font-size:0.79rem;display:flex;gap:0.5rem;align-items:baseline;"><span style="color:var(--gold);font-size:0.7rem;min-width:110px;flex-shrink:0;">External Examiner</span><span style="color:var(--bright);">Pr. Luc Désiré OMGBA</span><span style="color:var(--muted);font-size:0.75rem;">&nbsp;· Université de Lorraine, BETA</span></div>
+                <div style="font-size:0.79rem;display:flex;gap:0.5rem;align-items:baseline;"><span style="color:var(--gold);font-size:0.7rem;min-width:110px;flex-shrink:0;">Committee Member</span><span style="color:var(--bright);">Dr. Kimm GNANGNON</span><span style="color:var(--muted);font-size:0.75rem;">&nbsp;· World Bank Group</span></div>
+                <div style="font-size:0.79rem;display:flex;gap:0.5rem;align-items:baseline;"><span style="color:var(--gold);font-size:0.7rem;min-width:110px;flex-shrink:0;">Committee Member</span><span style="color:var(--bright);">Dr. Sampawende Jules TAPSOBA</span><span style="color:var(--muted);font-size:0.75rem;">&nbsp;· International Monetary Fund</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ed-item">
+          <div class="ed-yr">2021</div>
+          <div>
+            <div class="ed-deg">Magistère in Development Economics</div>
+            <div class="ed-sch">CERDI · Université Clermont Auvergne</div>
+            <div class="ed-nt">Highly selective 3-year integrated programme · Admits ~15 students/year nationally</div>
+            <div class="ed-desc">The Magistère du CERDI is one of the most selective economics programmes in France and a reference training ground for development economists destined for international organisations (World Bank, IMF, UNDP, AFD) and academic research. It integrates the third year of undergraduate studies with two concurrent master's tracks (AED and APD), conferring a dual master's degree upon completion. The curriculum covers advanced microeconomics and macroeconomics of development, rigorous econometrics, environmental and natural resource economics, international trade theory, development finance, poverty measurement, and field survey methodology. Students admitted through a competitive national selection process are expected to produce research of publishable quality.</div>
+          </div>
+        </div>
+
+        <div class="ed-item">
+          <div class="ed-yr">2021</div>
+          <div>
+            <div class="ed-deg">Master's in Economic Analysis of Development (AED)</div>
+            <div class="ed-sch">CERDI · Université Clermont Auvergne</div>
+            <div class="ed-nt">Mention Bien (with distinction) · Research track</div>
+            <div class="ed-desc">Research-oriented master focused on the quantitative analysis of economic development. Core curriculum: advanced microeconomic and macroeconomic theory, structural transformation and growth, trade and investment in developing countries, environmental and natural resource economics, impact evaluation, and poverty measurement. Students produce a research thesis applying rigorous empirical methods to development questions.</div>
+          </div>
+        </div>
+
+        <div class="ed-item">
+          <div class="ed-yr">2021</div>
+          <div>
+            <div class="ed-deg">Master's in Development Project Analysis (APD)</div>
+            <div class="ed-sch">CERDI · Université Clermont Auvergne</div>
+            <div class="ed-nt">Mention Assez Bien · Applied and professional track</div>
+            <div class="ed-desc">Applied track master focused on the design, financing, implementation, and evaluation of development projects and policies. Core curriculum: cost-benefit analysis, logical framework analysis (LFA), project cycle management, institutional economics, field survey methods, development organisation management, and public finance in developing countries. Prepares students for careers in international development organisations, consulting, and public policy.</div>
+          </div>
+        </div>
+
+        <div class="ed-item">
+          <div class="ed-yr">2019</div>
+          <div>
+            <div class="ed-deg">Bachelor's in Economics</div>
+            <div class="ed-sch">Université Clermont Auvergne</div>
+            <div class="ed-nt">Mention Bien (with distinction)</div>
+            <div class="ed-desc">General undergraduate programme in economics covering microeconomics, macroeconomics, mathematics for economists, statistics, economic history, introductory econometrics, and history of economic thought. Completed as part of the first year of the Magistère de développement économique du CERDI.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-right">
+      <div class="card">
+        <h4>Key Figures</h4>
+        <div class="st"><span class="st-l">Published articles</span><span class="st-v">3</span></div>
+        <div class="st"><span class="st-l">Working papers under review</span><span class="st-v">6</span></div>
+        <div class="st"><span class="st-l">International conferences</span><span class="st-v">5</span></div>
+        <div class="st"><span class="st-l">PhD research essays</span><span class="st-v">4</span></div>
+        <div class="st"><span class="st-l">Active research projects</span><span class="st-v">3</span></div>
+      </div>
+      <div class="card">
+        <h4>Languages</h4>
+        <div class="lang-r"><span class="lang-n">French</span><span class="lang-lv">Native</span></div>
+        <div class="lang-r"><span class="lang-n">English</span><span class="lang-lv">Fluent · written and spoken</span></div>
+      </div>
+      <div class="card">
+        <h4>Statistical Software</h4>
+        <div class="sk-wrap">
+          <span class="sk">Stata</span><span class="sk">R</span><span class="sk">Python</span><span class="sk">QGIS</span><span class="sk">MS Project</span>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Econometric Methods</h4>
+        <div class="sk-wrap">
+          <span class="sk">Event-study</span><span class="sk">Entropy balancing</span>
+          <span class="sk">Diff-in-differences</span><span class="sk">Spatial econometrics</span>
+          <span class="sk">Multilevel models</span><span class="sk">Dynamic panel GMM</span>
+          <span class="sk">Tobit</span><span class="sk">DCE / WTP</span>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Data</h4>
+        <div class="sk-wrap">
+          <span class="sk">Panel data</span><span class="sk">Cross-section</span>
+          <span class="sk">Spatial data</span><span class="sk">FADN</span>
+          <span class="sk">WB Enterprise Surveys</span><span class="sk">Mine geolocation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 3. RESEARCH ══ -->
+<div class="page offR" id="p-research">
+  <div class="research-wrap">
+    <div class="sec-hd">
+      <span class="sec-num">03.</span>
+      <h2 class="sec-title">Research</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="r-grid">
+      <div class="rc"><div class="rc-ico">⛏️</div><h3>Natural Resources and Mining</h3><p>How mining expansion shapes GVC participation, firm performance, and welfare in developing countries. Event-study identification on geolocated mine data across Sub-Saharan Africa, Asia, and Latin America.</p></div>
+      <div class="rc"><div class="rc-ico">🌐</div><h3>Global Value Chains</h3><p>Determinants of GVC positioning and upgrading in commodity-dependent economies. Trade integration dynamics under geopolitical shocks and sanctions regimes.</p></div>
+      <div class="rc"><div class="rc-ico">🌿</div><h3>Environmental Economics</h3><p>Ecosystem services valuation, deforestation drivers, protected area effectiveness. Non-market valuation using discrete choice experiments and willingness-to-pay estimation.</p></div>
+      <div class="rc"><div class="rc-ico">🌾</div><h3>Agricultural Policy</h3><p>Causal evaluation of EU Common Agricultural Policy reform on European farm environmental performance. Agricultural land use change determinants using FADN panel data.</p></div>
+      <div class="rc"><div class="rc-ico">⚖️</div><h3>Governance and Institutions</h3><p>Press freedom and government spending efficiency. Political cycles in forest rents. Effects of external military interventions on governance quality.</p></div>
+      <div class="rc"><div class="rc-ico">📊</div><h3>Causal Inference</h3><p>Entropy balancing, difference-in-differences, event-study, spatial and dynamic panel econometrics, multilevel models, GMM and Tobit applied to observational data in developing countries.</p></div>
+    </div>
+    <div class="sc-title">Research Showcase</div>
+    <p class="sc-sub">Key figures from published work. Place files (fig_gvc.png, fig_mining.png, fig_forest.png) in the same folder as index.html to display them.</p>
+    <div class="sc-grid">
+      <div class="sc-card">
+        <div class="sc-img"><img src="fig_gvc.png" alt="GVC" onerror="this.parentElement.innerHTML='<div class=\'sc-ph\'><div class=\'ico\'>📊</div><div>GVC Positioning Index<br>Event-study coefficients</div></div>'"></div>
+        <div class="sc-info"><div class="sc-journal">Economics of Transition · 2025</div><div class="sc-label">Mining and GVC participation</div></div>
+      </div>
+      <div class="sc-card">
+        <div class="sc-img"><img src="fig_mining.png" alt="Mining" onerror="this.parentElement.innerHTML='<div class=\'sc-ph\'><div class=\'ico\'>⛏️</div><div>Firm performance<br>Multilevel regression results</div></div>'"></div>
+        <div class="sc-info"><div class="sc-journal">Mineral Economics · 2025</div><div class="sc-label">Mining expansion and firm performance across 44 countries</div></div>
+      </div>
+      <div class="sc-card">
+        <div class="sc-img"><img src="fig_forest.png" alt="Forest" onerror="this.parentElement.innerHTML='<div class=\'sc-ph\'><div class=\'ico\'>🌿</div><div>Deforestation map<br>Spatial regression analysis</div></div>'"></div>
+        <div class="sc-info"><div class="sc-journal">Working Paper · HAL 2024</div><div class="sc-label">Mining-driven forest loss and protected areas</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 4. EXPERIENCE ══ -->
+<div class="page offR" id="p-exp">
+  <div class="exp-wrap">
+    <div class="sec-hd">
+      <span class="sec-num">04.</span>
+      <h2 class="sec-title">Experience</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="tl">
+      <div class="tli">
+        <div class="tl-date">Dec. 2024 – Dec. 2026</div>
+        <div class="tl-role">Postdoctoral Researcher</div>
+        <div class="tl-org">INRAE / BETA · Université de Lorraine · Nancy, France</div>
+        <ul class="tl-ul">
+          <li>Evaluating the causal effect of CAP reform on European farm environmental performance (MOSAIC project, FADN panel, entropy balancing, diff-in-differences)</li>
+          <li>Leading design and coordination of a stated preference survey on nocturnal lighting for environmental protection (TAMISEE project, field survey September 2026)</li>
+          <li>Biodiversity and ecosystem services valuation via discrete choice experiments (WildE European consortium)</li>
+          <li>Teaching: General Economics, Microeconomics, Survey Methodologies · Université de Lorraine (70 hrs/year)</li>
+        </ul>
+      </div>
+      <div class="tli">
+        <div class="tl-date">2024</div>
+        <div class="tl-role">Online Volunteer</div>
+        <div class="tl-org">UNIDO · United Nations Industrial Development Organization · Madagascar</div>
+        <ul class="tl-ul">
+          <li>Drafted the national industrialization framework document for Madagascar, coordinating inputs across multiple government ministries</li>
+          <li>Produced a policy-ready strategic document aligned with UNIDO's industrialization methodology</li>
+        </ul>
+      </div>
+      <div class="tli">
+        <div class="tl-date">Sep. 2021 – Nov. 2024</div>
+        <div class="tl-role">Ph.D. Candidate with Teaching Duties</div>
+        <div class="tl-org">Université Clermont Auvergne · LEO-UCA · Clermont-Ferrand, France</div>
+        <ul class="tl-ul">
+          <li>Authored four research essays on mining, deforestation, GVC participation, and wealth inequality (3 published, 6 working papers under review)</li>
+          <li>Teaching: Microeconomics, Macroeconomics, Statistics, Econometrics, Project Management (64 hrs/year)</li>
+          <li>Elected member, UCA doctoral school council (2021–2023)</li>
+          <li>Organizing committee, UCA Social Sciences Doctoral Workshop and ARTEMIS Doctoral Workshop (budget management, public procurement)</li>
+        </ul>
+      </div>
+      <div class="tli">
+        <div class="tl-date">Mar. 2021 – Jul. 2021</div>
+        <div class="tl-role">Junior Economist</div>
+        <div class="tl-org">French Ministry of Foreign Affairs · CAPS (Centre d'Analyse, de Prévision et de Stratégie) · Paris, France</div>
+        <ul class="tl-ul">
+          <li>Contributed to the preparation of the Paris Summit on Financing African Economies (May 2021), a landmark multilateral initiative on post-COVID debt relief and development finance for Africa</li>
+          <li>Produced economic briefs for the chief economist of the CAPS, synthesising macroeconomic analysis for diplomatic and policy audiences</li>
+        </ul>
+      </div>
+      <div class="tli">
+        <div class="tl-date">Sep. 2019 – Jun. 2020</div>
+        <div class="tl-role">Civic Service · Student Welcome Officer</div>
+        <div class="tl-org">Université Clermont Auvergne · Clermont-Ferrand, France</div>
+        <ul class="tl-ul">
+          <li>Welcome and orientation for international students at the School of Economics</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 5. PUBLICATIONS ══ -->
+<div class="page offR" id="p-pub">
+  <div class="pub-wrap">
+    <div class="sec-hd">
+      <span class="sec-num">05.</span>
+      <h2 class="sec-title">Publications</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="ptabs">
+      <button class="ptab active" onclick="showPub('pp',this)">Published Articles (3)</button>
+      <button class="ptab" onclick="showPub('pw',this)">Working Papers under Review (6)</button>
+    </div>
+    <div id="pp" class="pane active">
+      <div class="pi"><div class="pi-title">Mining and Structural Change: How Does Mining Affect Participation in the Global Value Chain?</div><div class="pi-meta">Doamba, M.U. (2025) · <span class="pi-j">Economics of Transition and Institutional Change</span> · doi:10.1111/ecot.12448</div><div class="pi-tags"><span class="pt">Mining</span><span class="pt">Global Value Chains</span><span class="pt">Event-study</span></div><a href="https://onlinelibrary.wiley.com/doi/pdf/10.1111/ecot.12448" class="pi-link" target="_blank">Full text</a></div>
+      <div class="pi"><div class="pi-title">Mining expansion's effects: when the mining sector's development affects firms' performances</div><div class="pi-meta">Doamba, M.U. (2025) · <span class="pi-j">Mineral Economics</span>, 1–18 · doi:10.1007/s13563-025-00568-w</div><div class="pi-tags"><span class="pt">Mining</span><span class="pt">Firm performance</span><span class="pt">Multilevel models</span></div><a href="https://doi.org/10.1007/s13563-025-00568-w" class="pi-link" target="_blank">Full text</a></div>
+      <div class="pi"><div class="pi-title">Institutions matter: Press freedom and government spending efficiency</div><div class="pi-meta">Bambe, B.W.W., Doamba, M.U., Oweggi, C.R. &amp; Combes, J.-L. (2026) · <span class="pi-j">Public Choice</span> · doi:10.1007/s11127-026-01433-2</div><div class="pi-tags"><span class="pt">Governance</span><span class="pt">Press freedom</span><span class="pt">Institutions</span></div><a href="https://doi.org/10.1007/s11127-026-01433-2" class="pi-link" target="_blank">Full text</a></div>
+    </div>
+    <div id="pw" class="pane">
+      <div class="pi"><div class="pi-title">Mining the forests: Do protected areas hinder mining-driven forest loss in Sub-Saharan Africa?</div><div class="pi-meta">Doamba, M.U., N'Diaye, Y., Motel Combes, P. &amp; Combes, J.-L. · <em>Submitted</em></div><div class="pi-tags"><span class="pt">Deforestation</span><span class="pt">Protected areas</span><span class="pt">Spatial econometrics</span></div><a href="https://hal.science/hal-04061084v1" class="pi-link" target="_blank">HAL</a></div>
+      <div class="pi"><div class="pi-title">Global Value Chains in Time of Sanctions</div><div class="pi-meta">Combes, J.-L., Motel Combes, P., Doamba, M.U., Nandnaba, A.M. &amp; Sawadogo, R.F. · <em>Submitted</em></div><div class="pi-tags"><span class="pt">GVC</span><span class="pt">Sanctions</span><span class="pt">Trade</span></div><a href="https://hal.science/hal-05056643/document" class="pi-link" target="_blank">HAL</a></div>
+      <div class="pi"><div class="pi-title">Forest Conservation Policies in the Kitchen: When protected areas influence household fuel choices in Tanzania</div><div class="pi-meta">Oweggi, C.R., Doamba, M.U., Motel Combes, P. &amp; Combes, J.-L. · <em>Submitted</em></div><div class="pi-tags"><span class="pt">Conservation</span><span class="pt">Energy</span><span class="pt">Tanzania</span></div><a href="https://uca.hal.science/hal-04567226" class="pi-link" target="_blank">HAL</a></div>
+      <div class="pi"><div class="pi-title">Determinants of agricultural land use intensity change in Europe: a research-gap analysis</div><div class="pi-meta">Devilliers, E., Doamba, M.U., Abildtrup, J. et al. · <em>Submitted</em></div><div class="pi-tags"><span class="pt">Land use</span><span class="pt">Europe</span><span class="pt">Meta-analysis</span></div></div>
+      <div class="pi"><div class="pi-title">CAP greening policy and permanent grassland maintenance in Europe: An empirical analysis</div><div class="pi-meta">Doamba, M.U., Abildtrup, J., Ndiaye, Y. &amp; Devillers, E. · <em>Submitted</em></div><div class="pi-tags"><span class="pt">CAP reform</span><span class="pt">Entropy balancing</span><span class="pt">Grassland</span></div></div>
+      <div class="pi"><div class="pi-title">The Corruption Dividend: How U.S. Military Interventions Fuel Governance Failures</div><div class="pi-meta">Doamba, M.U. · <em>Submitted</em></div><div class="pi-tags"><span class="pt">Governance</span><span class="pt">Corruption</span><span class="pt">Political economy</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 6. WORLD ══ -->
+<div class="page offR" id="p-world">
+  <div class="world-wrap">
+    <div>
+      <div class="sec-hd">
+        <span class="sec-num">06.</span>
+        <h2 class="sec-title">World</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div id="globe-main"></div>
+      <div class="gl-legend">
+        <span><span class="gl-d" style="background:#d4a54a"></span>Home</span>
+        <span><span class="gl-d" style="background:#58a6ff"></span>Work / Research</span>
+        <span><span class="gl-d" style="background:#a78bfa"></span>Conference</span>
+      </div>
+    </div>
+    <div>
+      <div class="conf-title">Conference Presentations <span style="font-size:0.72rem;color:var(--muted);font-family:'Inter',sans-serif;font-weight:400;">· Click to locate on globe</span></div>
+      <div class="cc" onclick="flyTo(45.50,-73.57)" style="cursor:pointer;" title="Fly to Montréal"><div class="cc-yr">2025</div><div class="cc-name">59th Annual Meetings · Canadian Economics Association (CEA)</div><div class="cc-loc">📍 Montréal, Canada</div></div>
+      <div class="cc" onclick="flyTo(47.50,19.04)" style="cursor:pointer;" title="Fly to Budapest"><div class="cc-yr">2025</div><div class="cc-name">MOSAIC Project Stakeholder Conference</div><div class="cc-loc">📍 Budapest, Hungary</div></div>
+      <div class="cc" onclick="flyTo(34.68,33.04)" style="cursor:pointer;" title="Fly to Limassol"><div class="cc-yr">2023</div><div class="cc-name">28th Annual Conference · EAERE</div><div class="cc-loc">📍 Limassol, Cyprus</div></div>
+      <div class="cc" onclick="flyTo(48.85,2.35)" style="cursor:pointer;" title="Fly to Paris"><div class="cc-yr">2023</div><div class="cc-name">Congress of the French Economic Association (AFSE)</div><div class="cc-loc">📍 SciencesPo, Paris, France</div></div>
+      <div class="cc" onclick="flyTo(48.58,7.75)" style="cursor:pointer;" title="Fly to Strasbourg"><div class="cc-yr">2023</div><div class="cc-name">36th Applied Microeconomics Days (JMA)</div><div class="cc-loc">📍 Université de Strasbourg, France</div></div>
+      <div class="cc" onclick="flyTo(-1.29,36.82)" style="cursor:pointer;" title="Fly to Nairobi"><div class="cc-yr">2023</div><div class="cc-name">Africa Meeting · Econometric Society</div><div class="cc-loc">📍 Nairobi, Kenya</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 7. VENTURES ══ -->
+<div class="page offR" id="p-ventures">
+  <div class="ventures-wrap">
+    <div class="sec-hd">
+      <span class="sec-num">07.</span>
+      <h2 class="sec-title">Ventures</h2>
+      <div class="sec-line"></div>
+    </div>
+    <p class="v-intro">Alongside academic research, I founded and co-lead three initiatives that bridge rigorous economic analysis with real-world impact on the African continent: a digital media platform dedicated to development economics, an economic consulting firm, and a startup redefining gifting culture in Burkina Faso.</p>
+    <div class="v-grid">
+
+      <!-- EcoDeViews -->
+      <div class="vc vc-eco">
+        <div class="vc-header">
+          <div class="vc-logo">EcoDeViews</div>
+          <div class="vc-tag">Digital Media Platform · Since 2022</div>
+        </div>
+        <div class="vc-body">
+          <span class="vc-role">Editor-in-Chief</span>
+          <p class="vc-desc">EcoDeViews (Economic Development Views) is a French-English digital media platform and collaborative reflection space dedicated to the analysis of African economic development dynamics. Founded by Régis Waalè DABIRE, Ulrich DOAMBA joined as Editor-in-Chief, leading editorial direction and content production.</p>
+          <p class="vc-mission">"Média numérique et plateforme de réflexion collaborative sur les logiques de développement des économies africaines."</p>
+          <ul class="vc-features">
+            <li>Scientific and university-based approach to economic analysis, making research accessible to a wider audience</li>
+            <li>Vision: empower economic actors and citizens through rigorous, evidence-based information and analysis</li>
+            <li>Covers monetary policy, natural resources, banking, inflation, fiscal policy, and economic governance across Africa</li>
+            <li>Team of economists, writers and technical staff; bilingual (French / English); active on social media</li>
+            <li>Articles authored by Ulrich DOAMBA include analyses of natural resource economics, monetary systems, and inflation dynamics</li>
+          </ul>
+        </div>
+        <div class="vc-footer">
+          <a href="https://ecodeviews.com" class="vc-link" target="_blank">ecodeviews.com</a>
+        </div>
+      </div>
+
+      <!-- C-Card -->
+      <div class="vc vc-ccard">
+        <div class="vc-header">
+          <div class="vc-logo">C-Card</div>
+          <div class="vc-tag">Experience Gift Card Startup · Burkina Faso</div>
+        </div>
+        <div class="vc-body">
+          <span class="vc-role">Founder · FasoJoy SARL</span>
+          <p class="vc-desc">C-Card is the first experience gift card platform in Burkina Faso, offering a curated catalogue of memorable experiences (restaurant dinners, spa treatments, escapes, outings) as giftable cards.</p>
+          <p class="vc-mission">"Offrez des moments inoubliables. Une carte cadeau liée à une vraie expérience au Burkina Faso."</p>
+          <ul class="vc-features">
+            <li>Addresses a gap in the Burkinabè formal gifting market: the first product linking gift purchasing to a guaranteed real-world experience</li>
+            <li>Available in Ouagadougou and Bobo-Dioulasso, Burkina Faso's two largest cities</li>
+            <li>Payments via Mobile Money (Orange Money, Moov Money) and bank card, accessible to all segments of the population</li>
+            <li>Partners with local restaurants, wellness centres, and leisure providers to deliver the experience</li>
+            <li>Reflects an entrepreneurial vision to develop a formalised consumer experience economy in West Africa</li>
+          </ul>
+        </div>
+        <div class="vc-footer">
+          <a href="https://c-card.africa" class="vc-link" target="_blank">c-card.africa</a>
+        </div>
+      </div>
+
+      <!-- DMUB Consulting -->
+      <div class="vc vc-dmub">
+        <div class="vc-header">
+          <div class="vc-logo">DMUB Consulting</div>
+          <div class="vc-tag">Economic Research and Consulting</div>
+        </div>
+        <div class="vc-body">
+          <span class="vc-role">Founder and Principal</span>
+          <p class="vc-desc">DMUB Consulting is an economic research and consulting firm applying scientific rigour to the strategic decisions of businesses and institutions operating in Africa.</p>
+          <p class="vc-mission">"Clarté scientifique pour des décisions stratégiques." (Scientific clarity for strategic decisions.)</p>
+          <ul class="vc-features">
+            <li>Bridges the gap between academic economic research and practical strategic decision-making in African contexts</li>
+            <li>Offers quantitative analysis, policy assessment, project evaluation, and strategic advisory services</li>
+            <li>Draws on the founder's expertise in econometrics, development economics, environmental economics, and natural resource analysis</li>
+            <li>Serves businesses, NGOs, development institutions, and public-sector bodies seeking evidence-based guidance</li>
+            <li>Positioned at the intersection of academic rigour and operational relevance for Africa's development challenges</li>
+          </ul>
+        </div>
+        <div class="vc-footer">
+          <a href="https://dmub.consulting" class="vc-link" target="_blank">dmub.consulting</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ 8. ACTIVITIES ══ -->
+<div class="page offR" id="p-act">
+  <div class="act-wrap">
+    <div class="sec-hd">
+      <span class="sec-num">08.</span>
+      <h2 class="sec-title">Other Activities</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="act-grid">
+      <div>
+        <div class="act-section">
+          <h3>Editorial and Scientific Communication</h3>
+          <div class="act-card">
+            <div class="act-role">Editor-in-Chief</div>
+            <div class="act-org"><a href="http://www.ecodeviews.com" class="act-link" target="_blank">EcoDeViews · ecodeviews.com</a></div>
+            <div class="act-desc">Online platform translating development economics research for non-specialist audiences. Content strategy, editorial direction, and production of accessible policy-oriented articles on African economic issues.</div>
+          </div>
+          <div class="act-card">
+            <div class="act-role">Peer Reviewer</div>
+            <div class="act-org">International Economics (Elsevier) · Revue d'Économie Industrielle</div>
+            <div class="act-desc">Reviewing submitted manuscripts for two peer-reviewed journals in international and industrial economics.</div>
+          </div>
+        </div>
+        <div class="act-section">
+          <h3>Academic Memberships</h3>
+          <div class="act-card">
+            <div class="act-role">Member</div>
+            <div class="act-org">The Econometric Society</div>
+            <div class="act-desc">Member of the Econometric Society, participated in the Africa Meeting (Nairobi, 2023). The Econometric Society is the leading international scientific society for the advancement of economic theory in relation to statistics and mathematics.</div>
+          </div>
+          <div class="act-card">
+            <div class="act-role">Member</div>
+            <div class="act-org">French Association of Development Economics (AFEDEV)</div>
+            <div class="act-desc">Member of AFEDEV (Association Française d'Economie du Développement), the French academic network dedicated to development economics research, training, and scientific exchange.</div>
+          </div>
+          <div class="act-card">
+            <div class="act-role">Member</div>
+            <div class="act-org">African Finance and Economics Association (AFEA)</div>
+            <div class="act-desc">Member of AFEA, an international association promoting excellence in economic and finance research related to Africa, fostering collaboration between researchers working on African economic development.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="act-section">
+          <h3>Event Organization and Academic Governance</h3>
+          <div class="act-card">
+            <div class="act-role">Organizing Committee</div>
+            <div class="act-org">Social Sciences Doctoral Workshop · Université Clermont Auvergne</div>
+            <div class="act-desc">Annual doctoral workshop organizing committee: logistics, budget management, and public procurement procedures for service providers in compliance with public procurement rules.</div>
+          </div>
+          <div class="act-card">
+            <div class="act-role">Organizing Committee</div>
+            <div class="act-org">ARTEMIS Doctoral Workshop · Université de Lorraine</div>
+            <div class="act-desc">Organizing committee for the ARTEMIS interdisciplinary doctoral workshop: session coordination, participant communication, budget management, and event logistics.</div>
+          </div>
+          <div class="act-card">
+            <div class="act-role">Doctoral School Council Member</div>
+            <div class="act-org">Université Clermont Auvergne (2021–2023)</div>
+            <div class="act-desc">Elected representative on the UCA doctoral school council: budget allocation for doctoral training activities and academic calendar planning.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 9. CONTACT ══ -->
+<div class="page offR" id="p-contact">
+  <div class="ct-wrap">
+    <p class="ct-pre">Get in Touch</p>
+    <h2 class="ct-h">Manegdo Ulrich Bienvenue DOAMBA</h2>
+    <p class="ct-desc">Open to academic collaborations, research visits, visiting fellowships, and policy consulting opportunities.</p>
+    <a href="mailto:manegdo-ulrich.doamba@inrae.fr" class="btn btn-g">Send an Email ✉️</a>
+    <div class="ct-grid">
+      <div class="ci"><div class="ci-l">Institution</div><div class="ci-v">INRAE / BETA · Université de Lorraine</div></div>
+      <div class="ci"><div class="ci-l">Location</div><div class="ci-v">258 Avenue de Strasbourg · 54000 Nancy, France</div></div>
+      <div class="ci"><div class="ci-l">Email</div><div class="ci-v"><a href="mailto:manegdo-ulrich.doamba@inrae.fr">manegdo-ulrich.doamba@inrae.fr</a></div></div>
+      <div class="ci"><div class="ci-l">Phone</div><div class="ci-v">+33 7 58 10 21 48</div></div>
+    </div>
+    <div class="soc-row">
+      <a href="https://sites.google.com/view/ulrichdoamba" class="soc" target="_blank"><i class="fas fa-globe soc-ico"></i><span>Website</span></a>
+      <a href="https://linkedin.com/in/manegdo-ulrich-doamba" class="soc" target="_blank"><i class="fab fa-linkedin soc-ico"></i><span>LinkedIn</span></a>
+      <a href="https://ecodeviews.com" class="soc" target="_blank"><i class="fas fa-newspaper soc-ico"></i><span>EcoDeViews</span></a>
+      <a href="https://dmub.consulting" class="soc" target="_blank"><i class="fas fa-briefcase soc-ico"></i><span>DMUB Consulting</span></a>
+      <a href="https://hal.science/search/index/?q=doamba&rows=30" class="soc" target="_blank"><i class="fas fa-book-open soc-ico"></i><span>HAL Archive</span></a>
+    </div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--bright);margin-top:2rem;margin-bottom:0.9rem;text-align:left;letter-spacing:0.02em;">References</div>
+    <div class="ref-grid">
+      <div class="ref-card"><div class="ref-name">Pascale Motel Combes</div><div class="ref-role">University Professor · UCA</div><div class="ref-email">pascale.motel_combes@uca.fr</div></div>
+      <div class="ref-card"><div class="ref-name">Jean-Louis Combes</div><div class="ref-role">University Professor · UCA</div><div class="ref-email">j-louis_combes@uca.fr</div></div>
+      <div class="ref-card"><div class="ref-name">Jens Abildtrup</div><div class="ref-role">Senior Researcher · BETA / INRAE</div><div class="ref-email">jens.abildtrup@inrae.fr</div></div>
+    </div>
+    <p style="margin-top:2.2rem;font-size:0.68rem;color:var(--muted);text-align:center;letter-spacing:0.02em;">© 2026 Manegdo Ulrich Bienvenue DOAMBA. All rights reserved. The content, design, and code of this site may not be copied, reproduced, or reused without prior written permission — see LICENSE.</p>
+  </div>
+</div>
+
+</div>
+
+<script src="https://unpkg.com/globe.gl@2" defer></script>
+<script>
+const PAGES=['p-home','p-about','p-research','p-exp','p-pub','p-world','p-ventures','p-act','p-contact'];
+const LABELS=['Home','About','Research','Experience','Publications','World','Ventures','Activities','Contact'];
+const N=PAGES.length;
+let cur=0,busy=false;
+
+function goTo(idx){
+  if(idx===cur||busy||idx<0||idx>=N)return;
+  busy=true;
+  const from=document.getElementById(PAGES[cur]);
+  const to=document.getElementById(PAGES[idx]);
+  const dir=idx>cur?1:-1;
+  to.style.cssText='transform:translateX('+(dir*100)+'%);opacity:0;transition:none;';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const t='transform 0.72s cubic-bezier(0.77,0,0.175,1),opacity 0.5s ease';
+    to.style.cssText='transition:'+t+';transform:translateX(0);opacity:1;';
+    from.style.cssText='transition:'+t+';transform:translateX('+(-dir*100)+'%);opacity:0;';
+  }));
+  setTimeout(()=>{
+    from.className='page '+(dir>0?'offL':'offR');
+    from.style.cssText='';
+    to.className='page current';
+    to.style.cssText='';
+    cur=idx;busy=false;
+    ui();
+    if(PAGES[idx]==='p-world')initGlobe();
+  },750);
+}
+function next(){goTo(cur+1);}
+function prev(){goTo(cur-1);}
+
+function ui(){
+  document.querySelectorAll('.db').forEach((d,i)=>d.classList.toggle('active',i===cur));
+  document.querySelectorAll('.np').forEach((n,i)=>n.classList.toggle('active',i===cur));
+  document.getElementById('pgi').textContent=String(cur+1).padStart(2,'0')+' / '+String(N).padStart(2,'0')+'  ·  '+LABELS[cur];
+  document.getElementById('arr-l').classList.toggle('hidden',cur===0);
+  document.getElementById('arr-r').classList.toggle('hidden',cur===N-1);
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')next();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')prev();
+});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){dx<0?next():prev();}},{passive:true});
+
+function showPub(id,btn){
+  document.querySelectorAll('.pane').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.ptab').forEach(el=>el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+let globeInit=false, globeInst=null;
+function flyTo(lat,lng){
+  if(globeInst) globeInst.pointOfView({lat,lng,altitude:1.4},1200);
+}
+function initGlobe(){
+  if(globeInit||typeof Globe==='undefined')return;
+  globeInit=true;
+  const pts=[
+    {lat:12.36,lng:-1.52,label:'Burkina Faso 🇧🇫 · Home country',t:'home'},
+    {lat:48.69,lng:6.18,label:'Nancy 🇫🇷 · INRAE/BETA',t:'work'},
+    {lat:45.76,lng:3.09,label:'Clermont-Ferrand 🇫🇷 · PhD, UCA',t:'work'},
+    {lat:45.50,lng:-73.57,label:'Montréal 🇨🇦 · CEA 2025',t:'conf'},
+    {lat:-1.29,lng:36.82,label:'Nairobi 🇰🇪 · Econometric Society 2023',t:'conf'},
+    {lat:34.68,lng:33.04,label:'Limassol 🇨🇾 · EAERE 2023',t:'conf'},
+    {lat:50.85,lng:4.35,label:'Belgium 🇧🇪 · TAMISEE',t:'work'},
+    {lat:47.50,lng:19.04,label:'Budapest 🇭🇺 · MOSAIC 2025',t:'conf'},
+    {lat:-18.88,lng:47.51,label:'Madagascar 🇲🇬 · UNIDO',t:'work'},
+  ];
+  const cm={home:'#d4a54a',work:'#58a6ff',conf:'#a78bfa'};
+  const tip=d=>`<div style="background:rgba(13,17,23,0.95);border:1px solid #c9a44a;padding:7px 11px;border-radius:6px;color:#f0f6fc;font-size:12px;font-family:Inter,sans-serif;">${d.label}</div>`;
+  const arcs=[[12.36,-1.52,48.69,6.18],[48.69,6.18,45.50,-73.57],[48.69,6.18,-1.29,36.82],[48.69,6.18,34.68,33.04],[48.69,6.18,50.85,4.35],[48.69,6.18,47.50,19.04],[48.69,6.18,-18.88,47.51],[12.36,-1.52,45.76,3.09]].map(a=>({startLat:a[0],startLng:a[1],endLat:a[2],endLng:a[3]}));
+  const el=document.getElementById('globe-main');
+  const w=Math.min(el.clientWidth||480,480);
+  const g=Globe()
+    .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+    .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
+    .pointsData(pts).pointLat('lat').pointLng('lng').pointLabel(tip).pointColor(d=>cm[d.t]).pointAltitude(0.09).pointRadius(0.55)
+    .arcsData(arcs).arcStartLat('startLat').arcStartLng('startLng').arcEndLat('endLat').arcEndLng('endLng')
+    .arcColor(()=>['rgba(201,164,74,0.9)','rgba(167,139,250,0.5)']).arcDashLength(0.4).arcDashGap(0.15).arcDashAnimateTime(2500).arcStroke(0.5)
+    .width(w).height(400)(el);
+  g.controls().autoRotate=true;g.controls().autoRotateSpeed=0.5;
+  globeInst=g;
+}
+ui();
+</script>
+</body>
+</html>
