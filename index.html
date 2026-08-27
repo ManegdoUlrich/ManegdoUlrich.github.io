@@ -206,7 +206,19 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
 .pi-link{display:inline-block;color:var(--gold);font-size:0.76rem;text-decoration:none;border:1px solid rgba(201,164,74,0.28);padding:0.17rem 0.58rem;border-radius:4px;transition:all 0.2s;}
 .pi-link:hover{background:var(--gold2);}
 
-/* ═══ PAGE 6: WORLD ═══ */
+/* ═══ PAGE 6: CERTIFICATIONS ═══ */
+.cert-intro{font-size:0.88rem;line-height:1.85;max-width:820px;margin-bottom:2.2rem;}
+.cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;}
+.cert-card{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;overflow:hidden;transition:all 0.25s;}
+.cert-card:hover{border-color:var(--border);transform:translateY(-4px);box-shadow:0 14px 28px rgba(0,0,0,0.3);}
+.cert-img{width:100%;aspect-ratio:16/10;overflow:hidden;background:#fff;border-bottom:1px solid var(--border2);}
+.cert-img img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.cert-info{padding:0.9rem 1.1rem 1.1rem;}
+.cert-issuer{color:var(--gold);font-size:0.66rem;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:0.3rem;}
+.cert-title{color:var(--bright);font-size:0.85rem;font-weight:600;line-height:1.35;margin-bottom:0.35rem;}
+.cert-date{color:var(--muted);font-size:0.71rem;font-family:monospace;}
+
+/* ═══ PAGE 7: WORLD ═══ */
 .world-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:1080px;width:100%;align-items:start;}
 #globe-main{width:100%;height:400px;}
 .gl-legend{display:flex;gap:1.5rem;margin-top:0.8rem;font-size:0.76rem;color:var(--muted);}
@@ -218,7 +230,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
 .cc-name{color:var(--bright);font-size:0.84rem;font-weight:500;margin-bottom:0.12rem;}
 .cc-loc{color:var(--muted);font-size:0.77rem;}
 
-/* ═══ PAGE 7: VENTURES ═══ */
+/* ═══ PAGE 8: VENTURES ═══ */
 .ventures-wrap{max-width:1080px;width:100%;}
 .v-intro{font-size:0.88rem;line-height:1.85;max-width:750px;margin-bottom:2.5rem;}
 .v-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
@@ -266,7 +278,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
 .vc-dmub .vc-features li::before{color:var(--gold);}
 .vc-dmub .vc-link{color:var(--gold);}
 
-/* ═══ PAGE 8: ACTIVITIES ═══ */
+/* ═══ PAGE 9: ACTIVITIES ═══ */
 .act-wrap{max-width:1000px;width:100%;}
 .act-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
 .act-section{margin-bottom:2rem;}
@@ -279,7 +291,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
 .act-link{color:var(--gold);text-decoration:none;font-size:0.76rem;border-bottom:1px solid var(--gold3);}
 .act-link:hover{border-bottom-color:var(--gold);}
 
-/* ═══ PAGE 9: CONTACT ═══ */
+/* ═══ PAGE 10: CONTACT ═══ */
 #p-contact{background:radial-gradient(ellipse at center,#1a1e2e 0%,var(--bg) 70%);align-items:center;}
 .ct-wrap{max-width:780px;width:100%;text-align:center;}
 .ct-pre{color:var(--gold);font-size:0.76rem;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:0.9rem;}
@@ -304,7 +316,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   .home-inner,.about-wrap,.world-wrap,.act-grid,.ct-grid,.ref-grid{grid-template-columns:1fr;}
   .photo-side{order:-1;}
   .photo-ring{width:200px;height:200px;}
-  .r-grid,.sc-grid,.v-grid{grid-template-columns:1fr;}
+  .r-grid,.sc-grid,.v-grid,.cert-grid{grid-template-columns:1fr;}
   .page{padding:calc(var(--nav-h) + 1.5rem) 1.5rem calc(2rem + env(safe-area-inset-bottom));}
   #topnav{padding:0 0.8rem;overflow:hidden;}
   .np{font-size:0.58rem;padding:0.3rem 0.45rem;white-space:nowrap;}
@@ -326,10 +338,11 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
     <button class="np" onclick="goTo(2)">Research</button>
     <button class="np" onclick="goTo(3)">Experience</button>
     <button class="np" onclick="goTo(4)">Publications</button>
-    <button class="np" onclick="goTo(5)">World</button>
-    <button class="np" onclick="goTo(6)">Ventures</button>
-    <button class="np" onclick="goTo(7)">Activities</button>
-    <button class="np" onclick="goTo(8)">Contact</button>
+    <button class="np" onclick="goTo(5)">Certifications</button>
+    <button class="np" onclick="goTo(6)">World</button>
+    <button class="np" onclick="goTo(7)">Ventures</button>
+    <button class="np" onclick="goTo(8)">Activities</button>
+    <button class="np" onclick="goTo(9)">Contact</button>
   </div>
 </nav>
 
@@ -339,15 +352,16 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   <button class="db" onclick="goTo(2)" title="Research"></button>
   <button class="db" onclick="goTo(3)" title="Experience"></button>
   <button class="db" onclick="goTo(4)" title="Publications"></button>
-  <button class="db" onclick="goTo(5)" title="World"></button>
-  <button class="db" onclick="goTo(6)" title="Ventures"></button>
-  <button class="db" onclick="goTo(7)" title="Activities"></button>
-  <button class="db" onclick="goTo(8)" title="Contact"></button>
+  <button class="db" onclick="goTo(5)" title="Certifications"></button>
+  <button class="db" onclick="goTo(6)" title="World"></button>
+  <button class="db" onclick="goTo(7)" title="Ventures"></button>
+  <button class="db" onclick="goTo(8)" title="Activities"></button>
+  <button class="db" onclick="goTo(9)" title="Contact"></button>
 </div>
 
 <div id="arr-l" onclick="prev()">&#8592;</div>
 <div id="arr-r" onclick="next()">&#8594;</div>
-<div id="pgi">01 / 09 &nbsp;·&nbsp; Home</div>
+<div id="pgi">01 / 10 &nbsp;·&nbsp; Home</div>
 
 <div id="viewport">
 
@@ -370,7 +384,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
       <p class="h-desc">I study how natural resources shape welfare, structural change, and environmental outcomes in developing countries, using causal inference methods on observational data across Sub-Saharan Africa, Asia, and Latin America.</p>
       <div class="h-btns">
         <button class="btn btn-g" onclick="goTo(4)">Publications</button>
-        <button class="btn btn-o" onclick="goTo(8)">Contact</button>
+        <button class="btn btn-o" onclick="goTo(9)">Contact</button>
       </div>
       <div class="h-tags">
         <span class="htag">Mining Economics</span>
@@ -382,7 +396,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
       <div class="h-links">
         <a href="https://linkedin.com/in/manegdo-ulrich-doamba" class="h-link" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
         <a href="mailto:manegdo-ulrich.doamba@inrae.fr" class="h-link"><i class="fas fa-envelope"></i> manegdo-ulrich.doamba@inrae.fr</a>
-        <button class="h-link h-link-btn" onclick="goTo(8)"><i class="fas fa-address-card"></i> Contact</button>
+        <button class="h-link h-link-btn" onclick="goTo(9)"><i class="fas fa-address-card"></i> Contact</button>
       </div>
     </div>
   </div>
@@ -636,12 +650,37 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   </div>
 </div>
 
-<!-- ══ 6. WORLD ══ -->
+<!-- ══ 6. CERTIFICATIONS ══ -->
+<div class="page offR" id="p-cert">
+  <div class="research-wrap">
+    <div class="sec-hd">
+      <span class="sec-num">06.</span>
+      <h2 class="sec-title">Certifications</h2>
+      <div class="sec-line"></div>
+    </div>
+    <p class="cert-intro">Alongside my research in causal inference and development economics, I am building applied data science and AI skills through self-directed coursework, extending my quantitative toolkit toward machine learning, deep learning, and computer vision.</p>
+    <div class="cert-grid">
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-python.jpg" alt="Python certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Python</div><div class="cert-date">April 13, 2026</div></div></div>
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-pandas.jpg" alt="Pandas certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Pandas</div><div class="cert-date">April 15, 2026</div></div></div>
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-data-cleaning.jpg" alt="Data Cleaning certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Data Cleaning</div><div class="cert-date">April 17, 2026</div></div></div>
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-data-visualization.jpg" alt="Data Visualization certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Data Visualization</div><div class="cert-date">April 17, 2026</div></div></div>
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-intro-ml.jpg" alt="Intro to Machine Learning certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Intro to Machine Learning</div><div class="cert-date">April 17, 2026</div></div></div>
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-time-series.jpg" alt="Time Series certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Time Series</div><div class="cert-date">April 17, 2026</div></div></div>
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-intermediate-ml.jpg" alt="Intermediate Machine Learning certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Intermediate Machine Learning</div><div class="cert-date">April 20, 2026</div></div></div>
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-digital-marketing.jpg" alt="Digital Marketing certificate"></div><div class="cert-info"><div class="cert-issuer">HubSpot Academy</div><div class="cert-title">Digital Marketing Certified</div><div class="cert-date">August 19, 2026</div></div></div>
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-deep-learning.jpg" alt="Intro to Deep Learning certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Intro to Deep Learning</div><div class="cert-date">August 25, 2026</div></div></div>
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-computer-vision.jpg" alt="Computer Vision certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Computer Vision</div><div class="cert-date">August 26, 2026</div></div></div>
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-ai-ethics.jpg" alt="Intro to AI Ethics certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Intro to AI Ethics</div><div class="cert-date">August 27, 2026</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 7. WORLD ══ -->
 <div class="page offR" id="p-world">
   <div class="world-wrap">
     <div>
       <div class="sec-hd">
-        <span class="sec-num">06.</span>
+        <span class="sec-num">07.</span>
         <h2 class="sec-title">World</h2>
         <div class="sec-line"></div>
       </div>
@@ -664,11 +703,11 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   </div>
 </div>
 
-<!-- ══ 7. VENTURES ══ -->
+<!-- ══ 8. VENTURES ══ -->
 <div class="page offR" id="p-ventures">
   <div class="ventures-wrap">
     <div class="sec-hd">
-      <span class="sec-num">07.</span>
+      <span class="sec-num">08.</span>
       <h2 class="sec-title">Ventures</h2>
       <div class="sec-line"></div>
     </div>
@@ -748,11 +787,11 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   </div>
 </div>
 
-<!-- ══ 8. ACTIVITIES ══ -->
+<!-- ══ 9. ACTIVITIES ══ -->
 <div class="page offR" id="p-act">
   <div class="act-wrap">
     <div class="sec-hd">
-      <span class="sec-num">08.</span>
+      <span class="sec-num">09.</span>
       <h2 class="sec-title">Other Activities</h2>
       <div class="sec-line"></div>
     </div>
@@ -814,7 +853,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
   </div>
 </div>
 
-<!-- ══ 9. CONTACT ══ -->
+<!-- ══ 10. CONTACT ══ -->
 <div class="page offR" id="p-contact">
   <div class="ct-wrap">
     <p class="ct-pre">Get in Touch</p>
@@ -848,8 +887,8 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
 
 <script src="https://unpkg.com/globe.gl@2" defer></script>
 <script>
-const PAGES=['p-home','p-about','p-research','p-exp','p-pub','p-world','p-ventures','p-act','p-contact'];
-const LABELS=['Home','About','Research','Experience','Publications','World','Ventures','Activities','Contact'];
+const PAGES=['p-home','p-about','p-research','p-exp','p-pub','p-cert','p-world','p-ventures','p-act','p-contact'];
+const LABELS=['Home','About','Research','Experience','Publications','Certifications','World','Ventures','Activities','Contact'];
 const N=PAGES.length;
 let cur=0,busy=false;
 
