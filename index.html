@@ -217,6 +217,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
 .cert-issuer{color:var(--gold);font-size:0.66rem;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:0.3rem;}
 .cert-title{color:var(--bright);font-size:0.85rem;font-weight:600;line-height:1.35;margin-bottom:0.35rem;}
 .cert-date{color:var(--muted);font-size:0.71rem;font-family:monospace;}
+.cert-skills{color:var(--muted);font-size:0.73rem;line-height:1.62;margin-top:0.55rem;padding-top:0.5rem;border-top:1px solid var(--border2);}
 
 /* ═══ PAGE 7: WORLD ═══ */
 .world-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:1080px;width:100%;align-items:start;}
@@ -674,6 +675,8 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;
       <div class="cert-card"><div class="cert-img"><img src="certs/cert-deep-learning.jpg" alt="Intro to Deep Learning certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Intro to Deep Learning</div><div class="cert-date">August 25, 2026</div></div></div>
       <div class="cert-card"><div class="cert-img"><img src="certs/cert-computer-vision.jpg" alt="Computer Vision certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Computer Vision</div><div class="cert-date">August 26, 2026</div></div></div>
       <div class="cert-card"><div class="cert-img"><img src="certs/cert-ai-ethics.jpg" alt="Intro to AI Ethics certificate"></div><div class="cert-info"><div class="cert-issuer">Kaggle Learn</div><div class="cert-title">Intro to AI Ethics</div><div class="cert-date">August 27, 2026</div></div></div>
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-ml-supervised.jpg" alt="Supervised Machine Learning certificate"></div><div class="cert-info"><div class="cert-issuer">DeepLearning.AI · Stanford Online</div><div class="cert-title">Supervised Machine Learning: Regression and Classification</div><div class="cert-date">August 31, 2026</div><p class="cert-skills">Linear and logistic regression, gradient descent, and regularization — building and evaluating supervised models for prediction and classification tasks.</p></div></div>
+      <div class="cert-card"><div class="cert-img"><img src="certs/cert-ml-advanced.jpg" alt="Advanced Learning Algorithms certificate"></div><div class="cert-info"><div class="cert-issuer">DeepLearning.AI · Stanford Online</div><div class="cert-title">Advanced Learning Algorithms</div><div class="cert-date">September 11, 2026</div><p class="cert-skills">Neural network design and training in TensorFlow, decision trees and ensemble methods (random forests, boosted trees), and systematic bias/variance diagnosis to improve model performance.</p></div></div>
     </div>
   </div>
 </div>
@@ -959,13 +962,13 @@ function initGlobe(){
     {lat:45.50,lng:-73.57,label:'Montréal 🇨🇦 · CEA 2025',t:'conf'},
     {lat:-1.29,lng:36.82,label:'Nairobi 🇰🇪 · Econometric Society 2023',t:'conf'},
     {lat:34.68,lng:33.04,label:'Limassol 🇨🇾 · EAERE 2023',t:'conf'},
-    {lat:50.85,lng:4.35,label:'Belgium 🇧🇪 · TAMISEE',t:'work'},
+    {lat:50.05,lng:4.49,label:'Couvin 🇧🇪 · TAMISEE project meetings',t:'work'},
     {lat:47.50,lng:19.04,label:'Budapest 🇭🇺 · MOSAIC 2025',t:'conf'},
     {lat:-18.88,lng:47.51,label:'Madagascar 🇲🇬 · UNIDO',t:'work'},
   ];
   const cm={home:'#d4a54a',work:'#58a6ff',conf:'#a78bfa'};
   const tip=d=>`<div style="background:rgba(13,17,23,0.95);border:1px solid #c9a44a;padding:7px 11px;border-radius:6px;color:#f0f6fc;font-size:12px;font-family:Inter,sans-serif;">${d.label}</div>`;
-  const arcs=[[12.36,-1.52,48.69,6.18],[48.69,6.18,45.50,-73.57],[48.69,6.18,-1.29,36.82],[48.69,6.18,34.68,33.04],[48.69,6.18,50.85,4.35],[48.69,6.18,47.50,19.04],[48.69,6.18,-18.88,47.51],[12.36,-1.52,45.76,3.09]].map(a=>({startLat:a[0],startLng:a[1],endLat:a[2],endLng:a[3]}));
+  const arcs=[[12.36,-1.52,48.69,6.18],[48.69,6.18,45.50,-73.57],[48.69,6.18,-1.29,36.82],[48.69,6.18,34.68,33.04],[48.69,6.18,50.05,4.49],[48.69,6.18,47.50,19.04],[48.69,6.18,-18.88,47.51],[12.36,-1.52,45.76,3.09]].map(a=>({startLat:a[0],startLng:a[1],endLat:a[2],endLng:a[3]}));
   const el=document.getElementById('globe-main');
   const w=Math.min(el.clientWidth||480,480);
   const g=Globe()
